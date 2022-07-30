@@ -19,6 +19,7 @@ jobs:
     - name: Fetch latest data
       run: |-        
         curl "https://gbfs.bird.co/dc" -o bird_current.json
+        curl "https://s3.amazonaws.com/lyft-lastmile-production-iad/lbs/dca/free_bike_status.json" -o lyft_current.json
     # Step 3: Commit and push
     - name: Commit and push
       run: |-
