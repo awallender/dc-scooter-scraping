@@ -1,10 +1,8 @@
 #This code takes JSON data from APIs broadcasting available scooters' locations
 #and stores it to a CSV
 
-#Load packages using pacman
-library(pacman)
-
-p_load(jsonlite, dplyr, readr)
+#Load packages
+library(jsonlite, dplyr, readr)
 
 #Bring in raw JSON data and reformat it to tibbles
 bird_current <- fromJSON('./bird_current.json')
@@ -39,6 +37,7 @@ lyft_current <- lyft_current$data$bikes %>% #Unnest the data frame
 spin_current <- fromJSON('./spin_current.json')
 spin_current <- spin_current$data$bikes %>% #Unnest the data frame
     mutate(company_name = "Spin",
+           vehicle_type = "scooter",
            time = Sys.time()) %>% 
     select(company_name, bike_id, lat, lon, vehicle_type, is_reserved, 
            is_disabled, time)
