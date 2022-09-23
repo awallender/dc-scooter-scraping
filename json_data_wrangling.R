@@ -2,7 +2,9 @@
 #and stores it to a CSV
 
 #Load packages
-library(jsonlite, dplyr, readr)
+library(pacman)
+
+p_load(jsonlite, dplyr, readr)
 
 #Bring in raw JSON data and reformat it to tibbles
 bird_current <- fromJSON('./bird_current.json')
