@@ -15,6 +15,11 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Setup R
+      uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: 'release'
+    - run: Rscript -e 'install.packages("pacman")'
     # Step 2: Get the latest data and store it as a CSV
     - name: Fetch latest data
       run: |-        
@@ -22,8 +27,11 @@ jobs:
         curl "https://s3.amazonaws.com/lyft-lastmile-production-iad/lbs/dca/free_bike_status.json" -o lyft_current.json
         curl "https://data.lime.bike/api/partners/v1/gbfs/washington_dc/free_bike_status.json" -o lime_current.json
         curl "https://admin-api-prod.helbizscooters.com//reporting/washington/gbfs/free_bike_status.json" -o helbiz_current.json
-        curl "https://gbfs.spin.pm/api/gbfs/v1/washington_dc/free_bike_status" -o spin_current.json
-    # Step 3: Commit and push
+        curl "https://gbfs.spin.pm/api/gbfs/v2/washington_dc/free_bike_status" -o spin_current.json
+    #Step 3: Run R script
+    - name: Run script to create main csv
+      run: Rscript json_data_wrangling.R
+    # Step 4: Commit and push
     - name: Commit and push
       run: |-
         git config user.name "Automated"
